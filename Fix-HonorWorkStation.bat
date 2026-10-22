@@ -7,6 +7,7 @@ title Fix HONOR WorkStation
 if /I "%~1"=="/devicefix" (
     reg add "HKLM\SOFTWARE\HONOR\HonorVersion" /v HonorDevice /t REG_SZ /d 1 /f >nul 2>&1
     reg add "HKLM\SOFTWARE\HONOR\BIOS" /v ProductVersion /t REG_SZ /d HONOR /f >nul 2>&1
+    reg add "HKLM\SOFTWARE\HONOR\PCManager\setting" /v DeviceTypeEx /t REG_SZ /d HONOR /f >nul 2>&1
     echo Device identity updated - continuing with the fix...
 )
 
@@ -61,6 +62,8 @@ set "NEEDEV=0"
 reg query "HKLM\SOFTWARE\HONOR\HonorVersion" /v HonorDevice >nul 2>&1
 if errorlevel 1 set "NEEDEV=1"
 reg query "HKLM\SOFTWARE\HONOR\BIOS" /v ProductVersion >nul 2>&1
+if errorlevel 1 set "NEEDEV=1"
+reg query "HKLM\SOFTWARE\HONOR\PCManager\setting" /v DeviceTypeEx >nul 2>&1
 if errorlevel 1 set "NEEDEV=1"
 if "%NEEDEV%"=="1" (
     call :log "device identity keys missing - elevating to apply them"
